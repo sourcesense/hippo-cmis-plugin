@@ -1,0 +1,23 @@
+K - Test it with latest hst 2.04.07
+
+- Add CmisServiceTestCase (should use OpenCMIS client)
+
+- Implement a correct Object CMIS rendering; check Alfresco impl
+http://cmis.alfresco.com/service/cmis/arg/n?noderef=workspace://SpacesStore/998e23c5-570f-4fc8-a86a-e895e019c048 (admin/admin)
+
+- Tweak cmis:capabilities
+
+- Refactor internal structure in order to adhere with Fileshare CMIS Repository example; code is already committed, but not finished and it's currently not used
+
+- Implement Permission Scheme
+render, for each CMS system group a permission item
+cmis:aclCapability/cmis:permissions
+Start with cmis:all, cmis:read, cmis:write
+
+- Implement ACL Mapping
+For each permission item, add a cmis:aclCapability/cmis:mapping
+Start with cmis:all, cmis:read, cmis:write
+
+- Add Cmis TCK test
+
+
