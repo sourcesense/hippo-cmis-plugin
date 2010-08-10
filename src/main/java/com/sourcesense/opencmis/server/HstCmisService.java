@@ -180,15 +180,17 @@ public class HstCmisService extends BaseHstContentService implements CmisService
     return repoInfo;
   }
 
-  public TypeDefinitionList getTypeChildren(String s, String s1, Boolean aBoolean, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public TypeDefinitionList getTypeChildren(String repositoryId, String typeId, Boolean includePropertyDefinitions,
+            BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
     return new TypeDefinitionListImpl();
   }
 
-  public List<TypeDefinitionContainer> getTypeDescendants(String s, String s1, BigInteger bigInteger, Boolean aBoolean, ExtensionsData extensionsData) {
+  public List<TypeDefinitionContainer> getTypeDescendants(String repositoryId, String typeId, BigInteger depth,
+            Boolean includePropertyDefinitions, ExtensionsData extension) {
     return new ArrayList<TypeDefinitionContainer>();
   }
 
-  public TypeDefinition getTypeDefinition(String s, String s1, ExtensionsData extensionsData) {
+  public TypeDefinition getTypeDefinition(String repositoryId, String typeId, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -196,29 +198,39 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * NavigationService implementation
    */
 
-  public ObjectInFolderList getChildren(String s, String s1, String s2, String s3, Boolean aBoolean, IncludeRelationships includeRelationships, String s4, Boolean aBoolean1, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public ObjectInFolderList getChildren(String repositoryId, String folderId, String filter, String orderBy,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            Boolean includePathSegment, BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
     ObjectInFolderList obj = new ObjectInFolderListImpl();
     return obj;
   }
 
-  public List<ObjectInFolderContainer> getDescendants(String s, String s1, BigInteger bigInteger, String s2, Boolean aBoolean, IncludeRelationships includeRelationships, String s3, Boolean aBoolean1, ExtensionsData extensionsData) {
+  public List<ObjectInFolderContainer> getDescendants(String repositoryId, String folderId, BigInteger depth, String filter,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            Boolean includePathSegment, ExtensionsData extension) {
     return new ArrayList<ObjectInFolderContainer>();
   }
 
-  public List<ObjectInFolderContainer> getFolderTree(String s, String s1, BigInteger bigInteger, String s2, Boolean aBoolean, IncludeRelationships includeRelationships, String s3, Boolean aBoolean1, ExtensionsData extensionsData) {
+  public List<ObjectInFolderContainer> getFolderTree(String repositoryId, String folderId, BigInteger depth, String filter,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            Boolean includePathSegment, ExtensionsData extension) {
     return new ArrayList<ObjectInFolderContainer>();
   }
 
-  public List<ObjectParentData> getObjectParents(String s, String s1, String s2, Boolean aBoolean, IncludeRelationships includeRelationships, String s3, Boolean aBoolean1, ExtensionsData extensionsData) {
+  public List<ObjectParentData> getObjectParents(String repositoryId, String objectId, String filter,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            Boolean includeRelativePathSegment, ExtensionsData extension) {
     return new ArrayList<ObjectParentData>();
   }
 
-  public ObjectData getFolderParent(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public ObjectData getFolderParent(String repositoryId, String folderId, String filter, ExtensionsData extension) {
     ObjectData objectData = new ObjectDataImpl();
     return objectData;
   }
 
-  public ObjectList getCheckedOutDocs(String s, String s1, String s2, String s3, Boolean aBoolean, IncludeRelationships includeRelationships, String s4, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public ObjectList getCheckedOutDocs(String repositoryId, String folderId, String filter, String orderBy,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
     ObjectList objectList = new ObjectListImpl();
     return objectList;
   }
@@ -226,27 +238,34 @@ public class HstCmisService extends BaseHstContentService implements CmisService
   /**
    * ObjectService implementation
    */
-  public String createDocument(String s, Properties properties, String s1, ContentStream contentStream, VersioningState versioningState, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public String createDocument(String repositoryId, Properties properties, String folderId, ContentStream contentStream,
+            VersioningState versioningState, List<String> policies, Acl addAces, Acl removeAces,
+            ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public String createDocumentFromSource(String s, String s1, Properties properties, String s2, VersioningState versioningState, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public String createDocumentFromSource(String repositoryId, String sourceId, Properties properties, String folderId,
+            VersioningState versioningState, List<String> policies, Acl addAces, Acl removeAces,
+            ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public String createFolder(String s, Properties properties, String s1, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public String createFolder(String repositoryId, Properties properties, String folderId, List<String> policies,
+            Acl addAces, Acl removeAces, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public String createRelationship(String s, Properties properties, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public String createRelationship(String repositoryId, Properties properties, List<String> policies, Acl addAces,
+            Acl removeAces, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public String createPolicy(String s, Properties properties, String s1, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public String createPolicy(String repositoryId, Properties properties, String folderId, List<String> policies,
+            Acl addAces, Acl removeAces, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public AllowableActions getAllowableActions(String s, String s1, ExtensionsData extensionsData) {
+  public AllowableActions getAllowableActions(String repositoryId, String objectId, ExtensionsData extension) {
     AllowableActions actions = new AllowableActionsImpl();
     return actions;
   }
@@ -284,18 +303,19 @@ public class HstCmisService extends BaseHstContentService implements CmisService
     return objectData;
   }
 
-  public Properties getProperties(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public Properties getProperties(String repositoryId, String objectId, String filter, ExtensionsData extension) {
     Properties props = new PropertiesImpl();
     return props;
   }
 
-  public List<RenditionData> getRenditions(String s, String s1, String s2, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public List<RenditionData> getRenditions(String repositoryId, String objectId, String renditionFilter,
+            BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
     return new ArrayList<RenditionData>();
   }
 
   public ObjectData getObjectByPath(String repositoryId, String path, String filter, Boolean includeAllowableActions,
-                                    IncludeRelationships includeRelationships, String renditionFilter, Boolean includePolicyIds,
-                                    Boolean includeAcl, ExtensionsData extension) {
+            IncludeRelationships includeRelationships, String renditionFilter, Boolean includePolicyIds,
+            Boolean includeAcl, ExtensionsData extension) {
 
     if (path == null || path.isEmpty()) {
       throw new CmisInvalidArgumentException("Path cannot be null!");
@@ -321,32 +341,38 @@ public class HstCmisService extends BaseHstContentService implements CmisService
     }
   }
 
-  public ContentStream getContentStream(String s, String s1, String s2, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public ContentStream getContentStream(String repositoryId, String objectId, String streamId, BigInteger offset,
+            BigInteger length, ExtensionsData extension) {
     ContentStream contentStream = new ContentStreamImpl();
     return contentStream;
   }
 
-  public void updateProperties(String s, Holder<String> stringHolder, Holder<String> stringHolder1, Properties properties, ExtensionsData extensionsData) {
+  public void updateProperties(String repositoryId, Holder<String> objectId, Holder<String> changeToken,
+            Properties properties, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void moveObject(String s, Holder<String> stringHolder, String s1, String s2, ExtensionsData extensionsData) {
+  public void moveObject(String repositoryId, Holder<String> objectId, String targetFolderId, String sourceFolderId,
+            ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void deleteObject(String s, String s1, Boolean aBoolean, ExtensionsData extensionsData) {
+  public void deleteObject(String repositoryId, String objectId, Boolean allVersions, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public FailedToDeleteData deleteTree(String s, String s1, Boolean aBoolean, UnfileObject unfileObject, Boolean aBoolean1, ExtensionsData extensionsData) {
+  public FailedToDeleteData deleteTree(String repositoryId, String folderId, Boolean allVersions,
+            UnfileObject unfileObjects, Boolean continueOnFailure, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void setContentStream(String s, Holder<String> stringHolder, Boolean aBoolean, Holder<String> stringHolder1, ContentStream contentStream, ExtensionsData extensionsData) {
+  public void setContentStream(String repositoryId, Holder<String> objectId, Boolean overwriteFlag,
+            Holder<String> changeToken, ContentStream contentStream, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void deleteContentStream(String s, Holder<String> stringHolder, Holder<String> stringHolder1, ExtensionsData extensionsData) {
+  public void deleteContentStream(String repositoryId, Holder<String> objectId, Holder<String> changeToken,
+            ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -354,29 +380,36 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * VersioningService implementation
    */
 
-  public void checkOut(String s, Holder<String> stringHolder, ExtensionsData extensionsData, Holder<Boolean> booleanHolder) {
+  public void checkOut(String repositoryId, Holder<String> objectId, ExtensionsData extension,
+            Holder<Boolean> contentCopied) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void cancelCheckOut(String s, String s1, ExtensionsData extensionsData) {
+  public void cancelCheckOut(String repositoryId, String objectId, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void checkIn(String s, Holder<String> stringHolder, Boolean aBoolean, Properties properties, ContentStream contentStream, String s1, List<String> strings, Acl acl, Acl acl1, ExtensionsData extensionsData) {
+  public void checkIn(String repositoryId, Holder<String> objectId, Boolean major, Properties properties,
+            ContentStream contentStream, String checkinComment, List<String> policies, Acl addAces, Acl removeAces,
+            ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public ObjectData getObjectOfLatestVersion(String s, String s1, String s2, Boolean aBoolean, String s3, Boolean aBoolean1, IncludeRelationships includeRelationships, String s4, Boolean aBoolean2, Boolean aBoolean3, ExtensionsData extensionsData) {
+  public ObjectData getObjectOfLatestVersion(String repositoryId, String objectId, String versionSeriesId,
+            Boolean major, String filter, Boolean includeAllowableActions, IncludeRelationships includeRelationships,
+            String renditionFilter, Boolean includePolicyIds, Boolean includeAcl, ExtensionsData extension) {
     ObjectData objectData = new ObjectDataImpl();
     return objectData;
   }
 
-  public Properties getPropertiesOfLatestVersion(String s, String s1, String s2, Boolean aBoolean, String s3, ExtensionsData extensionsData) {
+  public Properties getPropertiesOfLatestVersion(String repositoryId, String objectId, String versionSeriesId,
+            Boolean major, String filter, ExtensionsData extension) {
     Properties props = new PropertiesImpl();
     return props;
   }
 
-  public List<ObjectData> getAllVersions(String s, String s1, String s2, String s3, Boolean aBoolean, ExtensionsData extensionsData) {
+  public List<ObjectData> getAllVersions(String repositoryId, String objectId, String versionSeriesId, String filter,
+            Boolean includeAllowableActions, ExtensionsData extension) {
     return new ArrayList<ObjectData>();  //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -384,8 +417,10 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * DiscoveryService implementation
    */
 
-  public ObjectList query(String s, String s1, Boolean aBoolean, Boolean aBoolean1, IncludeRelationships includeRelationships, String s2, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
-    log.debug("query() - entering ...");
+  public ObjectList query(String repositoryId, String statement, Boolean searchAllVersions,
+            Boolean includeAllowableActions, IncludeRelationships includeRelationships, String renditionFilter,
+            BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
+
       try {
           ObjectList objectList = new ObjectListImpl();
           ObjectBeanPersistenceManager cpm = getContentPersistenceManager(servletRequest);
@@ -394,9 +429,7 @@ public class HstCmisService extends BaseHstContentService implements CmisService
           HippoBean hippoBean = (HippoBean) cpm.getObject("/content/documents/demosite/common/homepage/homepage/");
           objectData.setProperties(CmisHelper.compileHippoProperties(hippoBean, objectInfo));
           objectList.getObjects().add(objectData);
-          log.debug("query() - leaving ...");
           return objectList;
-
       } catch (LoginException e) {
         throw new WebApplicationException(e);
       } catch (ObjectBeanManagerException e) {
@@ -406,7 +439,8 @@ public class HstCmisService extends BaseHstContentService implements CmisService
       }
   }
 
-  public ObjectList getContentChanges(String s, Holder<String> stringHolder, Boolean aBoolean, String s1, Boolean aBoolean1, Boolean aBoolean2, BigInteger bigInteger, ExtensionsData extensionsData) {
+  public ObjectList getContentChanges(String repositoryId, Holder<String> changeLogToken, Boolean includeProperties,
+            String filter, Boolean includePolicyIds, Boolean includeAcl, BigInteger maxItems, ExtensionsData extension) {
     ObjectList objectList = new ObjectListImpl();
     return objectList;
   }
@@ -415,11 +449,12 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * MultiFilingService implementation
    */
 
-  public void addObjectToFolder(String s, String s1, String s2, Boolean aBoolean, ExtensionsData extensionsData) {
+  public void addObjectToFolder(String repositoryId, String objectId, String folderId, Boolean allVersions,
+            ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void removeObjectFromFolder(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public void removeObjectFromFolder(String repositoryId, String objectId, String folderId, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -427,7 +462,9 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * RelationshipService implementation
    */
 
-  public ObjectList getObjectRelationships(String s, String s1, Boolean aBoolean, RelationshipDirection relationshipDirection, String s2, String s3, Boolean aBoolean1, BigInteger bigInteger, BigInteger bigInteger1, ExtensionsData extensionsData) {
+  public ObjectList getObjectRelationships(String repositoryId, String objectId, Boolean includeSubRelationshipTypes,
+            RelationshipDirection relationshipDirection, String typeId, String filter, Boolean includeAllowableActions,
+            BigInteger maxItems, BigInteger skipCount, ExtensionsData extension) {
     ObjectList objectList = new ObjectListImpl();
     return objectList;
   }
@@ -436,7 +473,7 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * AclService implementation
    */
 
-  public Acl getAcl(String s, String s1, Boolean aBoolean, ExtensionsData extensionsData) {
+  public Acl getAcl(String repositoryId, String objectId, Boolean onlyBasicPermissions, ExtensionsData extension) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -449,15 +486,16 @@ public class HstCmisService extends BaseHstContentService implements CmisService
    * PolicyService implementation
    */
 
-  public void applyPolicy(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public void applyPolicy(String repositoryId, String policyId, String objectId, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public void removePolicy(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public void removePolicy(String repositoryId, String policyId, String objectId, ExtensionsData extension) {
     //To change body of implemented methods use File | Settings | File Templates.
   }
 
-  public List<ObjectData> getAppliedPolicies(String s, String s1, String s2, ExtensionsData extensionsData) {
+  public List<ObjectData> getAppliedPolicies(String repositoryId, String objectId, String filter,
+            ExtensionsData extension) {
     return new ArrayList<ObjectData>();
   }
 

@@ -34,7 +34,7 @@ mvn clean install
     <overlays>
       <overlay>
         <groupId>com.sourcesense.hippo.opencmis</groupId>
-        <artifactId>hippo-hst-cmis-server</artifactId>
+        <artifactId>hippo-cmis-plugin</artifactId>
       </overlay>
     </overlays>
   </configuration>
