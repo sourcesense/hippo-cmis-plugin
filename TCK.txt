@@ -1,0 +1,75 @@
+How to run the Apache Chemistry CMIS TCK tests against the Hippo CMIS Server
+----
+
+
++ Checkout chemistry-abdera
+svn co https://svn.apache.org/repos/asf/incubator/chemistry/abdera-ext/trunk/ chemistry-abdera
+cd chemistry-abdera
+mvn install
+cd ..
+
+
++ Checkout the cmis-tck
+svn co https://svn.apache.org/repos/asf/incubator/chemistry/tck/trunk/ cmis-tck
+cd cmis-tck
+
+
++ Add the hippo profile in the pom.xml
+<profile>
+    <id>hippo</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>chemistry.tck.tests</name>
+                            <value>*</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.serviceUrl</name>
+                            <value>http://localhost:8085/site/preview/cmis/my-repo-id</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.user</name>
+                            <value>admin</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.password</name>
+                            <value>admin</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.validate</name>
+                            <value>false</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.failOnValidationError</name>
+                            <value>false</value>
+                        </property>
+                        <property>
+                            <name>chemistry.tck.traceRequests</name>
+                            <value>false</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+
+
++ Tip
+If you want to run it from your IDE, you can configure the test run of TCKTestSuiteTest using the following parameters:
+-Dchemistry.tck.tests=* 
+-Dchemistry.tck.serviceUrl=http://localhost:8085/site/preview/cmis/my-repo-id 
+-Dchemistry.tck.user=admin 
+-Dchemistry.tck.password=admin 
+-Dchemistry.tck.validate=true 
+-Dchemistry.tck.failOnValidationError=false 
+-Dchemistry.tck.traceRequests=false
+
+
++ Run the test
+mvn test -Phippo
