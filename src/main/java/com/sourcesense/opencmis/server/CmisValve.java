@@ -14,14 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CmisValve extends AbstractValve {
 
-/*
-  protected List<ResourceLifecycleManagement> resourceLifecycleManagements;
-  private static final Logger log = LoggerFactory.getLogger(CmisValve.class);
-  public void setResourceLifecycleManagements(List<ResourceLifecycleManagement> resourceLifecycleManagements) {
-    this.resourceLifecycleManagements = resourceLifecycleManagements;
-  }
-*/
-
   @Override
   public void invoke(ValveContext context) throws ContainerException {
 
@@ -39,7 +31,7 @@ public class CmisValve extends AbstractValve {
           throw new CmisUnauthorizedException("Authentication Required!",e);
         }
     } catch (Exception e) {
-     CmisHelper.sendError(e, servletResponse);
+     CmisHelper.sendContainerError(e, servletResponse);
     }
 
     context.invokeNext();

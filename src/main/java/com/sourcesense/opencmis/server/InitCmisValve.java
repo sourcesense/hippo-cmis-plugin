@@ -18,24 +18,12 @@ import java.util.Map;
 
 public class InitCmisValve extends AbstractValve {
 
-/*
-  private static final long serialVersionUID = 1L;
-  private static final Logger log = LoggerFactory.getLogger(CmisValve.class);
-*/
-
   private static final String METHOD_GET = "GET";
   private static final String METHOD_POST = "POST";
   private static final String METHOD_PUT = "PUT";
   private static final String METHOD_DELETE = "DELETE";
 
   private static final String CALL_CONTEXT_HANDLER_CLASS = "org.apache.chemistry.opencmis.server.impl.atompub.BasicAuthCallContextHandler";
-
-/*
-  protected List<ResourceLifecycleManagement> resourceLifecycleManagements;
-  public void setResourceLifecycleManagements(List<ResourceLifecycleManagement> resourceLifecycleManagements) {
-    this.resourceLifecycleManagements = resourceLifecycleManagements;
-  }
-*/
 
   @Override
   public void invoke(ValveContext context) throws ContainerException {
@@ -82,7 +70,7 @@ public class InitCmisValve extends AbstractValve {
     try {
         callContextHandler = (CallContextHandler) Class.forName(CALL_CONTEXT_HANDLER_CLASS).newInstance();
       } catch (Exception e) {
-        CmisHelper.sendError(e, response);
+        CmisHelper.sendContainerError(e, response);
       }
 
     // call call context handler
@@ -180,7 +168,7 @@ public class InitCmisValve extends AbstractValve {
       dispatcher.addResource(AtomPubUtils.RESOURCE_POLICIES, METHOD_POST, PolicyService.class, "applyPolicy");
       dispatcher.addResource(AtomPubUtils.RESOURCE_POLICIES, METHOD_DELETE, PolicyService.class, "removePolicy");
     } catch (NoSuchMethodException e) {
-      CmisHelper.sendError(e, servletResponse);
+      CmisHelper.sendContainerError(e, servletResponse);
     }
     return dispatcher;
   }

@@ -22,6 +22,8 @@ import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundExcept
 import org.apache.chemistry.opencmis.commons.exceptions.CmisPermissionDeniedException;
 import org.apache.chemistry.opencmis.commons.server.CallContext;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +41,26 @@ public class RepositoryMap {
     fMap = new HashMap<String, HstCmisRepository>();
   }
 
+  public Collection<HstCmisRepository> getRepositories() {
+    return fMap.values();
+  }
+
+  public void init(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    for(HstCmisRepository hcr : getRepositories()) {
+      if ((hcr != null) && (hcr.getRepositoryId() != null)) {
+        hcr.init(servletRequest, servletResponse);
+      }
+    }
+  }
+
   /**
    * Adds a repository object.
    */
-  public void addRepository(HstCmisRepository fsr) {
-    if ((fsr == null) || (fsr.getRepositoryId() == null)) {
+  public void addRepository(HstCmisRepository hcr) {
+    if ((hcr == null) || (hcr.getRepositoryId() == null)) {
       return;
     }
-
-    fMap.put(fsr.getRepositoryId(), fsr);
+    fMap.put(hcr.getRepositoryId(), hcr);
   }
 
   /**
@@ -74,17 +87,11 @@ public class RepositoryMap {
   }
 
   /**
-   * Returns all repository objects.
-   */
-  public Collection<HstCmisRepository> getRepositories() {
-    return fMap.values();
-  }
-
-  /**
    * Authenticates a user against the configured logins.
    */
   private boolean authenticate(String username, String password) {
     //@TODO implement
     return true;
   }
+
 }

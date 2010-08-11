@@ -1,21 +1,24 @@
 package com.sourcesense.opencmis.server;
 
 import org.apache.chemistry.opencmis.commons.PropertyIds;
+import org.apache.chemistry.opencmis.commons.data.PermissionMapping;
 import org.apache.chemistry.opencmis.commons.data.Properties;
+import org.apache.chemistry.opencmis.commons.data.PropertyData;
+import org.apache.chemistry.opencmis.commons.data.PropertyId;
+import org.apache.chemistry.opencmis.commons.definitions.PermissionDefinition;
+import org.apache.chemistry.opencmis.commons.definitions.PropertyDefinition;
 import org.apache.chemistry.opencmis.commons.exceptions.*;
-import org.apache.chemistry.opencmis.commons.impl.dataobjects.PropertiesImpl;
-import org.apache.chemistry.opencmis.commons.impl.dataobjects.PropertyBooleanImpl;
-import org.apache.chemistry.opencmis.commons.impl.dataobjects.PropertyDateTimeImpl;
-import org.apache.chemistry.opencmis.commons.impl.dataobjects.PropertyIdImpl;
+import org.apache.chemistry.opencmis.commons.impl.dataobjects.*;
 import org.apache.chemistry.opencmis.commons.impl.server.ObjectInfoImpl;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.container.ContainerException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.GregorianCalendar;
-import java.util.Map;
-import java.util.Set;
+import javax.ws.rs.WebApplicationException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
 
 public class CmisHelper {
 
@@ -181,7 +184,7 @@ public class CmisHelper {
   }
 */
 
-
+  @Deprecated
   public static Properties compileHippoProperties(HippoBean hippoBean, ObjectInfoImpl objectInfo) {
 
     assert (hippoBean != null);
@@ -236,7 +239,7 @@ public class CmisHelper {
     return p.substring(1).split("/");
   }
 
-  public static void sendError(Exception exc, HttpServletResponse servletResponse) throws ContainerException {
+  public static void sendContainerError(Exception exc, HttpServletResponse servletResponse) throws ContainerException {
     try {
       if (exc instanceof CmisUnauthorizedException) {
         servletResponse.setHeader("WWW-Authenticate", "Basic realm=\"CMIS\"");
@@ -248,6 +251,17 @@ public class CmisHelper {
     }
   }
 
+  public static void sendCmisServiceError(Exception exc, HttpServletResponse servletResponse) throws WebApplicationException {
+    try {
+      if (exc instanceof CmisUnauthorizedException) {
+        servletResponse.setHeader("WWW-Authenticate", "Basic realm=\"CMIS\"");
+      } else if (exc instanceof CmisBaseException) {
+        servletResponse.sendError(getErrorCode((CmisBaseException) exc), exc.getMessage());
+      } else throw new WebApplicationException(exc);
+    } catch (Exception e) {
+      throw new WebApplicationException(e);
+    }
+  }
 
   private static int getErrorCode(CmisBaseException ex) {
     if (ex instanceof CmisConstraintException) {
@@ -279,6 +293,101 @@ public class CmisHelper {
     }
 
     return 500;
+  }
+
+  /**
+   * Converts milliseconds into a calendar object.
+   */
+  public static GregorianCalendar millisToCalendar(long millis) {
+    GregorianCalendar result = new GregorianCalendar();
+    result.setTimeZone(TimeZone.getTimeZone("GMT"));
+    result.setTimeInMillis(millis);
+
+    return result;
+  }
+
+  public static boolean isEmptyProperty(PropertyData<?> prop) {
+    if ((prop == null) || (prop.getValues() == null)) {
+      return true;
+    }
+    return prop.getValues().isEmpty();
+  }
+
+
+  public static String getTypeId(Properties properties) {
+    PropertyData<?> typeProperty = properties.getProperties().get(PropertyIds.OBJECT_TYPE_ID);
+    if (!(typeProperty instanceof PropertyId)) {
+      throw new CmisInvalidArgumentException("Type id must be set!");
+    }
+
+    String typeId = ((PropertyId) typeProperty).getFirstValue();
+    if (typeId == null) {
+      throw new CmisInvalidArgumentException("Type id must be set!");
+    }
+
+    return typeId;
+  }
+
+  public static boolean addPropertyDefault(PropertiesImpl props, PropertyDefinition<?> propDef) {
+    if ((props == null) || (props.getProperties() == null)) {
+      throw new IllegalArgumentException("Props must not be null!");
+    }
+
+    if (propDef == null) {
+      return false;
+    }
+
+    List<?> defaultValue = propDef.getDefaultValue();
+    if ((defaultValue != null) && (!defaultValue.isEmpty())) {
+      switch (propDef.getPropertyType()) {
+        case BOOLEAN:
+          props.addProperty(new PropertyBooleanImpl(propDef.getId(), (List<Boolean>) defaultValue));
+          break;
+        case DATETIME:
+          props.addProperty(new PropertyDateTimeImpl(propDef.getId(), (List<GregorianCalendar>) defaultValue));
+          break;
+        case DECIMAL:
+          props.addProperty(new PropertyDecimalImpl(propDef.getId(), (List<BigDecimal>) defaultValue));
+          break;
+        case HTML:
+          props.addProperty(new PropertyHtmlImpl(propDef.getId(), (List<String>) defaultValue));
+          break;
+        case ID:
+          props.addProperty(new PropertyIdImpl(propDef.getId(), (List<String>) defaultValue));
+          break;
+        case INTEGER:
+          props.addProperty(new PropertyIntegerImpl(propDef.getId(), (List<BigInteger>) defaultValue));
+          break;
+        case STRING:
+          props.addProperty(new PropertyStringImpl(propDef.getId(), (List<String>) defaultValue));
+          break;
+        case URI:
+          props.addProperty(new PropertyUriImpl(propDef.getId(), (List<String>) defaultValue));
+          break;
+        default:
+          throw new RuntimeException("Unknown datatype! Spec change?");
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  public static PermissionDefinition createPermission(String permission, String description) {
+    PermissionDefinitionDataImpl pd = new PermissionDefinitionDataImpl();
+    pd.setPermission(permission);
+    pd.setDescription(description);
+
+    return pd;
+  }
+
+  public static PermissionMapping createMapping(String key, String permission) {
+    PermissionMappingDataImpl pm = new PermissionMappingDataImpl();
+    pm.setKey(key);
+    pm.setPermissions(Collections.singletonList(permission));
+
+    return pm;
   }
 
 }

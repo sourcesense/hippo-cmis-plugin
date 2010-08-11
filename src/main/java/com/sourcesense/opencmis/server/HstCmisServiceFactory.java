@@ -38,7 +38,6 @@ public class HstCmisServiceFactory extends AbstractServiceFactory {
   private static final Log log = LogFactory.getLog(HstCmisServiceFactory.class);
 
   private RepositoryMap repositoryMap;
-  private TypeManager typeManager;
 
   private ThreadLocal<HstCmisService> threadLocalService = new ThreadLocal<HstCmisService>();
 
@@ -49,7 +48,9 @@ public class HstCmisServiceFactory extends AbstractServiceFactory {
   public void init(Map<String, String> parameters) {
     super.init(parameters);
     repositoryMap = new RepositoryMap();
-    typeManager = new TypeManager();
+    
+    HstCmisRepository hcr = new HstCmisRepository("my-repo-id", "my-root-folder-id");
+    repositoryMap.addRepository(hcr);
   }
 
   @Override
@@ -64,10 +65,11 @@ public class HstCmisServiceFactory extends AbstractServiceFactory {
   }
 
   public CmisService getService(CallContext context, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    repositoryMap.init(servletRequest, servletResponse);
     repositoryMap.authenticate(context);
     HstCmisService service = threadLocalService.get();
     if (service == null) {
-      service = new HstCmisService(repositoryMap, servletRequest, servletResponse);
+      service = new HstCmisService(repositoryMap);
       threadLocalService.set(service);
     }
     service.setCallContext(context);
