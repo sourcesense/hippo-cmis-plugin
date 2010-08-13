@@ -27,5 +27,6 @@
   <import resource="classpath:/org/hippoecm/hst/site/container/SpringComponentManager-pipelines.xml" />
   <import resource="classpath:/org/hippoecm/hst/site/container/SpringComponentManager-request.xml" />
   <import resource="classpath:/com/sourcesense/opencmis/server/GeneralMultiplePoolingRepository.xml" />
+  <import resource="classpath:/META-INF/hst-assembly/overrides/cmis-services.xml" />
 
 </beans>

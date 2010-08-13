@@ -24,11 +24,30 @@
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
+  <bean id="servletContext" class="org.springframework.mock.web.MockServletContext"/>
+
+  <bean id="servletContextEvent" class="javax.servlet.ServletContextEvent">
+    <constructor-arg ref="servletContext" />
+  </bean>
+
+  <bean id="cmisContextListener" class="org.apache.chemistry.opencmis.server.impl.CmisRepositoryContextListener"/>
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="cmisContextListener"/>
+    <property name="targetMethod" value="contextInitialized" />
+    <property name="arguments">
+      <list>
+        <ref bean="servletContextEvent" />
+      </list>
+    </property>
+  </bean>
+
   <bean id="cmisServiceServletConfig" class="org.hippoecm.hst.core.container.ServletDelegatingValve$ServletConfigImpl">
     <constructor-arg value="cmisServlet" />
     <constructor-arg>
       <map/>
     </constructor-arg>
+    <constructor-arg ref="servletContext" />
   </bean>
 
   <bean id="cmisSiteContentPathResolvingValve"

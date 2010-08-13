@@ -34,8 +34,14 @@ public class TestHstCmisService extends AbstractJaxrsSpringTestCase {
   protected ServletContext servletContext;
   protected HstContainerConfig hstContainerConfig;
 
-  @Before
-  public void setUpOpenCmisClient() throws Exception {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+    setUpOpenCmisClient();
+    setUpHstEnvironment();
+  }
+
+  private void setUpOpenCmisClient() throws Exception {
     // default factory implementation of client runtime
     SessionFactory f = SessionFactoryImpl.newInstance();
     Map<String, String> parameter = new HashMap<String, String>();
@@ -53,20 +59,18 @@ public class TestHstCmisService extends AbstractJaxrsSpringTestCase {
     parameter.put(SessionParameter.LOCALE_ISO3166_COUNTRY, "");
     parameter.put(SessionParameter.LOCALE_ISO639_LANGUAGE, "en");
     parameter.put(SessionParameter.LOCALE_VARIANT, "");
-
-    // create session
-    Session s = f.createSession(parameter);
   }
 
-  @Before
-  public void setUpHstEnvironment() throws Exception {
+  private void setUpHstEnvironment() throws Exception {
     HstServices.setComponentManager(getComponentManager());
 
     pipelines = (Pipelines) getComponent(Pipelines.class.getName());
-    jaxrsPipeline = this.pipelines.getPipeline("cmisPipeline");
+    jaxrsPipeline = this.pipelines.getPipeline("CmisPipeline");
+    assertNotNull(jaxrsPipeline);
 
     servletConfig = getComponent("cmisServiceServletConfig");
     servletContext = servletConfig.getServletContext();
+    assertNotNull(servletContext);
 
     hstContainerConfig = new HstContainerConfig() {
         public ClassLoader getContextClassLoader() {
