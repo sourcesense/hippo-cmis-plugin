@@ -156,9 +156,9 @@ public class HstCmisRepository extends BaseHstContentService {
     // compile repository info
     fRepositoryInfo = new RepositoryInfoImpl();
 
-    fRepositoryInfo.setRepositoryId(fRepositoryId);
-    fRepositoryInfo.setRepositoryName(fRepositoryId);
-    fRepositoryInfo.setRepositoryDescription(fRepositoryId);
+    fRepositoryInfo.setsetId(fRepositoryId);
+    fRepositoryInfo.setName(fRepositoryId);
+    fRepositoryInfo.setDescription(fRepositoryId);
 
     fRepositoryInfo.setCmisVersionSupported(HST_CMIS_VERSION_SUPPORTED);
 
