@@ -35,11 +35,12 @@
       <url>http://repository.sourcesense.com/nexus/content/groups/public</url>
     </repository>
   </repositories>
-  
+
   <properties>
-    <opencmisVersion>0.1.0-incubating-SNAPSHOT</opencmisVersion>
+    <opencmisVersion>0.3.0</opencmisVersion>
+    <hst.version>2.04.07</hst.version>
   </properties>
-    
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -65,7 +66,7 @@
       <artifactId>log4j</artifactId>
       <scope>runtime</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>javax.jcr</groupId>
       <artifactId>jcr</artifactId>
@@ -75,25 +76,25 @@
     <dependency>
       <groupId>org.onehippo.ecm.hst.components</groupId>
       <artifactId>hst-core</artifactId>
-      <version>2.04.07</version>
+      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.onehippo.ecm.hst.testsuite.sandbox</groupId>
       <artifactId>hst-jaxrs</artifactId>
-      <version>2.04.07</version>
+      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.onehippo.ecm.hst</groupId>
       <artifactId>hst-api</artifactId>
-      <version>2.04.07</version>
+      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.onehippo.ecm.hst</groupId>
       <artifactId>hst-commons</artifactId>
-      <version>2.04.07</version>
+      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -112,8 +113,8 @@
       <scope>test</scope>
     </dependency>
 
- 
-    
+
+
      <!--CMIS dependencies-->
     <dependency>
       <groupId>org.apache.chemistry.opencmis</groupId>
