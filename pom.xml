@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.onehippo.ecm.hst</groupId>
     <artifactId>demosuite</artifactId>
-    <version>2.04.07</version>
+    <version>2.22.01</version>
   </parent>
 
   <name>Hippo Site Toolkit CMIS API</name>
@@ -38,7 +38,7 @@
 
   <properties>
     <opencmisVersion>0.3.0</opencmisVersion>
-    <hst.version>2.04.07</hst.version>
+    <hst.version>2.22.01</hst.version>
   </properties>
 
   <dependencies>
@@ -162,6 +162,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version>
         <configuration>
           <overlays>
             <overlay>
