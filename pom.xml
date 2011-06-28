@@ -18,9 +18,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.onehippo.ecm.hst</groupId>
-    <artifactId>demosuite</artifactId>
-    <version>2.22.01</version>
+    <groupId>com.onehippo.gogreen</groupId>
+    <artifactId>hippogogreen</artifactId>
+    <version>3.03.01</version>
   </parent>
 
   <name>Hippo Site Toolkit CMIS API</name>
@@ -43,78 +43,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.jcr</groupId>
-      <artifactId>jcr</artifactId>
-      <version>1.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.onehippo.ecm.hst.components</groupId>
+      <groupId>org.onehippo.cms7.hst.components</groupId>
       <artifactId>hst-core</artifactId>
-      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.onehippo.ecm.hst.testsuite.sandbox</groupId>
+      <groupId>org.onehippo.cms7.hst.components</groupId>
       <artifactId>hst-jaxrs</artifactId>
-      <version>${hst.version}</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.onehippo.ecm.hst</groupId>
-      <artifactId>hst-api</artifactId>
-      <version>${hst.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.onehippo.ecm.hst</groupId>
-      <artifactId>hst-commons</artifactId>
-      <version>${hst.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-
-
      <!--CMIS dependencies-->
     <dependency>
       <groupId>org.apache.chemistry.opencmis</groupId>

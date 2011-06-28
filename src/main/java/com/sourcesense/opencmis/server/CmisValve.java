@@ -55,7 +55,7 @@ public class CmisValve extends AbstractValve {
       String repositoryId = pathFragments[0];
       String resource = pathFragments[1];
 
-      Dispatcher dispatcher = (Dispatcher) valveContext.getRequestContainerConfig().getServletConfig().getServletContext().getAttribute("dispatcher");
+      Dispatcher dispatcher = (Dispatcher) valveContext.getRequestContainerConfig().getServletContext().getAttribute("dispatcher");
 
       // dispatch
       boolean methodFound = dispatcher.dispatch(resource, method, context, service, repositoryId, request,

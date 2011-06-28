@@ -36,7 +36,9 @@ public class InitCmisValve extends AbstractValve {
     HstRequestContext requestContext = (HstRequestContext) servletRequest.getAttribute(ContainerConstants.HST_REQUEST_CONTEXT);
 
     if (requestContext == null) {
-      requestContext = getRequestContextComponent().create(servletRequest, context.getServletResponse(), getContainerConfiguration());
+      //requestContext = getRequestContextComponent().create(servletRequest, context.getServletResponse(), getContainerConfiguration());
+      requestContext = getRequestContextComponent().create(true);
+      //requestContext.se
       servletRequest.setAttribute(ContainerConstants.HST_REQUEST_CONTEXT, requestContext);
     }
 
@@ -46,7 +48,7 @@ public class InitCmisValve extends AbstractValve {
 
     // initialize the dispatcher and place it in the servletContext
     Dispatcher dispatcher = getDispatcher(servletResponse);
-    context.getRequestContainerConfig().getServletConfig().getServletContext().setAttribute("dispatcher", dispatcher);
+    context.getRequestContainerConfig().getServletContext().setAttribute("dispatcher", dispatcher);
 
     // get the CMIS Service and place it in the servlet request
     CmisService cmisService = getCmisService(servletRequest, servletResponse, callContext);
