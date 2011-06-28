@@ -37,16 +37,16 @@ import org.apache.commons.logging.LogFactory;
 import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
 import org.hippoecm.hst.content.beans.manager.ObjectBeanPersistenceManager;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
-import org.hippoecm.hst.content.beans.standard.HippoDocumentBean;
 import org.hippoecm.hst.content.beans.standard.HippoFolderBean;
-import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.services.support.jaxrs.content.BaseHstContentService;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.WebApplicationException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -156,7 +156,7 @@ public class HstCmisRepository extends BaseHstContentService {
     // compile repository info
     fRepositoryInfo = new RepositoryInfoImpl();
 
-    fRepositoryInfo.setsetId(fRepositoryId);
+    fRepositoryInfo.setId(fRepositoryId);
     fRepositoryInfo.setName(fRepositoryId);
     fRepositoryInfo.setDescription(fRepositoryId);
 
@@ -186,7 +186,7 @@ public class HstCmisRepository extends BaseHstContentService {
     capabilities.setSupportsGetFolderTree(true);
     capabilities.setCapabilityRendition(CapabilityRenditions.NONE);
 
-    fRepositoryInfo.setRepositoryCapabilities(capabilities);
+    fRepositoryInfo.setCapabilities(capabilities);
 
     AclCapabilitiesDataImpl aclCapability = new AclCapabilitiesDataImpl();
     aclCapability.setSupportedPermissions(SupportedPermissions.BASIC);
