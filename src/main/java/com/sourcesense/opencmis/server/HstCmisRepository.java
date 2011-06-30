@@ -1,21 +1,18 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+  Copyright 2011 Sourcesense
+
+  Licensed under the Apache License, Version 2.0 (the  "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS"
+  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
 package com.sourcesense.opencmis.server;
 
 import org.apache.chemistry.opencmis.commons.PropertyIds;
@@ -128,7 +125,7 @@ public class HstCmisRepository extends AbstractJaxrsService {
     }
     return ret;
   }
-  
+
   public HippoBean getObjectByPath(String path) {
     HippoBean ret = null;
     try {
@@ -506,7 +503,7 @@ public class HstCmisRepository extends AbstractJaxrsService {
   public TypeDefinitionList getTypeChildren(String typeId, Boolean includePropertyDefinitions, BigInteger maxItems, BigInteger skipCount) {
     return new TypeDefinitionListImpl();
   }
-  
+
   // --- helper methods ---
 
   /**
@@ -672,7 +669,7 @@ public class HstCmisRepository extends AbstractJaxrsService {
       GregorianCalendar creationDate = (GregorianCalendar)beanProperties.get(HIPPO_CREATION_DATE);
       addPropertyDateTime(result, typeId, filter, PropertyIds.CREATION_DATE, creationDate);
       objectInfo.setCreationDate(creationDate);
-      
+
       // modification date
       GregorianCalendar lastModificationDate = (GregorianCalendar)beanProperties.get(HIPPO_MODIFICATION_DATE);
       addPropertyDateTime(result, typeId, filter, PropertyIds.LAST_MODIFICATION_DATE, lastModificationDate);
