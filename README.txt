@@ -9,41 +9,22 @@ The package already provides a simple CMIS repository.properties and all the Spr
 
 In order to use it, you need to edit your pom.xml and web.xml:
 
-1. Build it
+1. Build HippoGoGreen
 ----
+svn co http://svn.onehippo.org/repos/hippo/hippo-demos/hippo-go-green/tags/hippogogreen-3.03.03/
+cd hippogogreen-3.03.03/
+mvn clean install
+
+2. Build Hippo CMIS Plugin
+----
+
 git clone git://github.com/sourcesense/hippo-cmis-plugin.git
 cd hippo-cmis-plugin
 mvn clean install
 
-2. Edit site/pom.xml
------
-
-2.1 - Add Hippo/OpenCMIS WAR Dependency
-<dependency>
-  <groupId>com.sourcesense.hippo.opencmis</groupId>
-  <artifactId>hippo-cmis-plugin</artifactId>
-  <version>2.04.07</version>
-  <type>war</type>
-</dependency>
-
-2.2 - OpenCMIS WAR Overlay
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-war-plugin</artifactId>
-  <configuration>
-    <overlays>
-      <overlay>
-        <groupId>com.sourcesense.hippo.opencmis</groupId>
-        <artifactId>hippo-cmis-plugin</artifactId>
-      </overlay>
-    </overlays>
-  </configuration>
-</plugin>
-
 3. Edit site/src/main/webapp/WEB-INF/web.xml and add the following configurations:
 ---
 
-3.1 - Listeners
 <listener>
   <listener-class>org.apache.chemistry.opencmis.server.impl.CmisRepositoryContextListener</listener-class>
 </listener>
@@ -51,7 +32,13 @@ mvn clean install
   <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 </listener>
 
-4 - Try it
+4 - Run CMS and Site
+----
+
+cd hippogogreen-3.03.03
+mvn -Pcargo.run
+
+5 - Try it
 ----
 
 http://localhost:8085/site/preview/cmis
