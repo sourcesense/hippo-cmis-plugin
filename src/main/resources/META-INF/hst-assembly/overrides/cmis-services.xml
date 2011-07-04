@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2011 Sourcesense
 
@@ -14,109 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-
-<!--
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:lang="http://www.springframework.org/schema/lang"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-                           http://www.springframework.org/schema/lang http://www.springframework.org/schema/beans/spring-lang-2.5.xsd
-                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
-                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
-
-
-  <bean id="servletContext" class="org.springframework.mock.web.MockServletContext"/>
-
-  <bean id="servletContextEvent" class="javax.servlet.ServletContextEvent">
-    <constructor-arg ref="servletContext" />
-  </bean>
-
-
-  <bean id="cmisContextListener" class="org.apache.chemistry.opencmis.server.impl.CmisRepositoryContextListener"/>
-
-  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="cmisContextListener"/>
-    <property name="targetMethod" value="contextInitialized" />
-    <property name="arguments">
-      <list>
-        <ref bean="servletContextEvent" />
-      </list>
-    </property>
-  </bean>
-
-  <bean id="cmisServiceServletConfig" class="org.hippoecm.hst.core.container.ServletDelegatingValve$ServletConfigImpl">
-    <constructor-arg value="cmisServlet" />
-    <constructor-arg>
-      <map/>
-    </constructor-arg>
-    <constructor-arg ref="servletContext" />
-  </bean>
-
-  <bean id="cmisSiteContentPathResolvingValve"
-        class="org.hippoecm.hst.services.support.jaxrs.container.SiteContentPathResolvingValve">
-    <property name="sitesManagers">
-      <map>
-        <entry key="${preview.servlet.path}/cmis" value-ref="org.hippoecm.hst.configuration.HstSitesManager.preview" />
-        <entry key="${live.servlet.path}/cmis" value-ref="org.hippoecm.hst.configuration.HstSitesManager.live" />
-      </map>
-    </property>
-  </bean>
-
-    <bean id="initializationCmisValve" class="com.sourcesense.opencmis.server.InitCmisValve"/>
-
-    <bean id="cmisValve" class="com.sourcesense.opencmis.server.CmisValve"/>
-
-    <bean id="flushCmisValve" class="com.sourcesense.opencmis.server.FlushCmisValve"/>
-
-    <bean id="cmisPipeline" class="org.hippoecm.hst.core.container.HstSitePipeline">
-      <property name="preInvokingValves">
-        <list>
-          <ref bean="initializationValve" />
-          <ref bean="initializationCmisValve" />
-        </list>
-      </property>
-        <property name="invokingValves">
-          <list>
-            <ref bean="urlValve" />
-            <ref bean="siteResolvingValve" />
-            <ref bean="cmisSiteContentPathResolvingValve" />
-            <ref bean="securityValve" />
-            <ref bean="cmisValve" />
-          </list>
-        </property>
-        <property name="postInvokingValves">
-          <list>
-            <ref bean="cleanupValve" />
-            <ref bean="flushCmisValve" />
-          </list>
-        </property>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-      <property name="targetObject">
-        <bean class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
-          <property name="targetObject" ref="org.hippoecm.hst.core.container.Pipelines" />
-          <property name="propertyPath" value="pipelines"/>
-        </bean>
-      </property>
-      <property name="targetMethod" value="put" />
-      <property name="arguments">
-        <list>
-          <value>CmisPipeline</value>
-          <ref local="cmisPipeline" />
-        </list>
-      </property>
-    </bean>
-
-</beans>
--->
-
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- The following two imports will include the JaxrsRestContentPipeline !!! -->
   <import
@@ -125,12 +26,21 @@
     resource="classpath:/org/hippoecm/hst/site/optional/jaxrs/SpringComponentManager-rest-content-pipeline.xml" />
 
   <!-- Your custom JAX-RS REST Resource Providers will be added into the following list !!! -->
-  <bean id="customRestContentResourceProviders"
-        class="org.springframework.beans.factory.config.ListFactoryBean">
-    <property name="sourceList">
-      <list>
-      </list>
+  <bean
+    id="customRestContentResourceProviders"
+    class="org.springframework.beans.factory.config.ListFactoryBean">
+    <property
+        name="sourceList">
+      <list></list>
     </property>
   </bean>
 
+  <!-- Wrap your JAX-RS component by SingletonResourceProvider. -->
+  <bean
+    class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
+    <constructor-arg>
+      <bean
+        class="com.sourcesense.opencmis.server.ProductContentResource" />
+    </constructor-arg>
+  </bean>
 </beans>

@@ -51,27 +51,6 @@ mvn clean install
   <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 </listener>
 
-3.2 - Servlets
-<servlet>
-    <servlet-name>HstCmisContainerServlet</servlet-name>
-    <servlet-class>org.hippoecm.hst.container.HstContainerServlet</servlet-class>
-    <init-param>
-        <param-name>hstDefaultPipeline</param-name>
-        <param-value>CmisPipeline</param-value>
-    </init-param>
-    <load-on-startup>3</load-on-startup>
-</servlet>
-
-3.3 - Servlet Mappings
-<servlet-mapping>
-  <servlet-name>HstCmisContainerServlet</servlet-name>
-  <url-pattern>/preview/cmis/*</url-pattern>
-</servlet-mapping>
-<servlet-mapping>
-  <servlet-name>HstCmisContainerServlet</servlet-name>
-  <url-pattern>/live/cmis/*</url-pattern>
-</servlet-mapping>
-
 4 - Try it
 ----
 
