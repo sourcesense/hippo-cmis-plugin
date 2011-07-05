@@ -31,16 +31,16 @@
     class="org.springframework.beans.factory.config.ListFactoryBean">
     <property
         name="sourceList">
-      <list></list>
+      <list>
+        <!-- Wrap your JAX-RS component by SingletonResourceProvider. -->
+          <bean
+            class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
+            <constructor-arg>
+              <bean
+                class="com.sourcesense.opencmis.server.ProductContentResource" />
+            </constructor-arg>
+          </bean>
+      </list>
     </property>
-  </bean>
-
-  <!-- Wrap your JAX-RS component by SingletonResourceProvider. -->
-  <bean
-    class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-    <constructor-arg>
-      <bean
-        class="com.sourcesense.opencmis.server.ProductContentResource" />
-    </constructor-arg>
   </bean>
 </beans>
