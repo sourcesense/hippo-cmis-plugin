@@ -11,6 +11,12 @@ import org.hippoecm.hst.jaxrs.services.content.AbstractContentResource;
 
 public class ProductContentResource extends AbstractContentResource {
 
+	public ProductContentResource() {
+		System.out.println("YYYYYYYYYYYYYYYYYYYYYY");
+		System.out.println("YYYYYYYYYYYYYYYYYYYYYY");
+		System.out.println("YYYYYYYYYYYYYYYYYYYYYY");
+	}
+	
     @GET
     @Path("/")
     public NodeRepresentation getProductResource(@Context HttpServletRequest servletRequest, @Context HttpServletResponse servletResponse) {
