@@ -9,6 +9,8 @@ import javax.ws.rs.core.Context;
 import org.hippoecm.hst.jaxrs.model.content.NodeRepresentation;
 import org.hippoecm.hst.jaxrs.services.content.AbstractContentResource;
 
+@Path("/hippogogreen:product/")
+@Deprecated
 public class ProductContentResource extends AbstractContentResource {
 
 	public ProductContentResource() {

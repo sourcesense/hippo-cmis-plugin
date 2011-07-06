@@ -22,6 +22,15 @@ git clone git://github.com/sourcesense/hippo-cmis-plugin.git
 cd hippo-cmis-plugin
 mvn clean install
 
+2.1. Hippo configuration
+
+cp \
+    hippo-cmis-plugin/src/main/resources/META-INF/hst-assembly/overrides/cmis-services.xml \
+    hippogogreen-3.03.01/site/src/main/resources/META-INF/hst-assembly/overrides/custom-jaxrs-resources.xml
+
+cd hippogogreen-3.03.01/site
+mvn clean install
+
 3. Edit site/src/main/webapp/WEB-INF/web.xml and add the following configurations:
 ---
 
