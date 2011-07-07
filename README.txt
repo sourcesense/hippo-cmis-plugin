@@ -33,6 +33,32 @@ cp \
 cd hippogogreen-3.03.01/site
 mvn clean install
 
+2.3. Edit site/pom.xml
+
+Add
+
+<dependency>
+  <groupId>com.sourcesense.hippo.opencmis</groupId>
+  <artifactId>hippo-cmis-plugin</artifactId>
+  <version>3.03.01</version>
+  <type>war</type>
+</dependency>
+
+and, in the plugins section
+
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <configuration>
+    <overlays>
+      <overlay>
+        <groupId>com.sourcesense.hippo.opencmis</groupId>
+        <artifactId>hippo-cmis-plugin</artifactId>
+      </overlay>
+    </overlays>
+  </configuration>
+</plugin>
+
 3. Edit site/src/main/webapp/WEB-INF/web.xml and add the following configurations:
 ---
 
@@ -42,6 +68,11 @@ mvn clean install
 <listener>
   <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 </listener>
+
+3.5. Rebuild site module
+
+cd site
+mvn clean install
 
 4 - Run CMS and Site
 ----
