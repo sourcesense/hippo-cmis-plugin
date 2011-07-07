@@ -41,7 +41,7 @@ public class InitCmisValve extends AbstractValve {
   private static final String METHOD_PUT = "PUT";
   private static final String METHOD_DELETE = "DELETE";
 
-  private static final String CALL_CONTEXT_HANDLER_CLASS = "org.apache.chemistry.opencmis.server.impl.atompub.BasicAuthCallContextHandler";
+  private static final String CALL_CONTEXT_HANDLER_CLASS = "org.apache.chemistry.opencmis.server.shared.BasicAuthCallContextHandler";
 
   @Override
   public void invoke(ValveContext context) throws ContainerException {
