@@ -11,6 +11,7 @@ In order to use it, you need to edit your pom.xml and web.xml:
 
 1. Build HippoGoGreen
 ----
+
 svn co http://svn.onehippo.org/repos/hippo/hippo-demos/hippo-go-green/tags/hippogogreen-3.03.03/
 cd hippogogreen-3.03.03/
 mvn clean install
@@ -23,6 +24,7 @@ cd hippo-cmis-plugin
 mvn clean install
 
 2.1. Hippo configuration
+----
 
 cp \
     hippo-cmis-plugin/src/main/resources/META-INF/hst-assembly/overrides/cmis-services.xml \
@@ -47,8 +49,27 @@ mvn clean install
 cd hippogogreen-3.03.03
 mvn -Pcargo.run
 
+4.5 - Create cmisrestapi node
+
+Open the Hippo Console
+
+http://localhost:8080/cms/console/
+
+Navigate through
+
+hdt:hst / hst:hosts / dev-localhost / localhost / hst:root
+
+Copy the node restapi renaming it cmisrestapi
+
+Modify its content replacing
+
+hst:alias -> cmisrestapi
+hst:namedpipeline -> CmisRestContentPipeline
+
+Do the same with the reatapi node into preview (same node path)
+
 5 - Try it
 ----
 
-http://localhost:8085/site/preview/cmis
-http://localhost:8085/site/preview/cmis/hst-cmis-repository-id/id?id=143140f9-1e75-457f-a782-381cd4eade7c
+http://localhost:8080/site/preview/cmisrestapi
+http://localhost:8080/site/preview/cmisrestapi/products/health-care/2010/07/avalon-organic-conditioner
