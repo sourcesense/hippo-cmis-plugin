@@ -28,73 +28,11 @@
   <import resource="classpath:/org/hippoecm/hst/site/optional/jaxrs/SpringComponentManager-rest-plain-pipeline.xml" />
   <import resource="classpath:/org/hippoecm/hst/site/optional/jaxrs/SpringComponentManager-rest-content-pipeline.xml" />
 
-  <!-- Custom JAX-RS REST Plain Resource Providers to be overriden. -->
-  <bean id="customRestPlainResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
-    <property name="sourceList">
-      <list>
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="com.onehippo.gogreen.jaxrs.services.TopProductsResource" />
-          </constructor-arg>
-        </bean>
-      </list>
-    </property>
-  </bean>
-
-  <!-- Custom JAX-RS REST Content Resource Providers to be overriden. -->
-  <bean id="customRestContentResourceProviders" class="org.springframework.beans.factory.config.ListFactoryBean">
-    <property name="sourceList">
-      <list>
-        <!-- These came from the hst demosuite, I 'm not deleting them since we should structure
-        the ContentResource classes in the same hierarchical manner as the ProductRepresentation, which extends
-        DocumentRepresentation which extends BaseDocumentRepresentation.........
-
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="com.onehippo.gogreen.jaxrs.services.BaseDocumentContentResource" />
-          </constructor-arg>
-        </bean>
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="com.onehippo.gogreen.jaxrs.services.DocumentContentResource" />
-          </constructor-arg>
-        </bean>
-        -->
-
-<!-- This has been commented by anovarini for testing
-
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="com.onehippo.gogreen.jaxrs.services.ProductContentResource" />
-          </constructor-arg>
-        </bean>
--->
-
-        <bean class="org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider">
-          <constructor-arg>
-            <bean class="com.sourcesense.opencmis.server.ProductContentResource" />
-          </constructor-arg>
-        </bean>
-      </list>
-    </property>
-  </bean>
-
   <bean id="initializationCmisValve" class="com.sourcesense.opencmis.server.InitCmisValve"/>
 
   <bean id="cmisValve" class="com.sourcesense.opencmis.server.CmisValve"/>
 
   <bean id="flushCmisValve" class="com.sourcesense.opencmis.server.FlushCmisValve"/>
-
-  <bean id="jaxrsRestContentResourceProviders" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetClass" value="org.apache.commons.collections.ListUtils" />
-    <property name="targetMethod" value="union" />
-    <property name="arguments">
-      <list>
-        <ref bean="customRestContentResourceProviders" />
-        <ref bean="defaultRestContentResourceProviders" />
-      </list>
-    </property>
-  </bean>
 
   <!-- Pipelining -->
 
@@ -118,32 +56,12 @@
           </property>
           <property name="invokingValves">
             <list>
-<!--
-    Actual configuration
-
-              <ref bean="securityValve" />
-              <ref bean="subjectBasedSessionValve" />
-              <ref bean="noCacheResponseHeadersValve" />
-              <ref bean="jaxrsRestContentServiceValve" />
--->
-<!--
-    This is taken from the old configuration; it is totally different, still
-    investigating how to merge it with the one above
-
-              <ref bean="urlValve" />
-              <ref bean="siteResolvingValve" />
-              <ref bean="cmisSiteContentPathResolvingValve" />
               <ref bean="securityValve" />
               <ref bean="cmisValve" />
--->
-
 <!--
-    Attempt to merge both of the above
--->
-              <ref bean="securityValve" />
               <ref bean="subjectBasedSessionValve" />
               <ref bean="noCacheResponseHeadersValve" />
-              <ref bean="cmisValve" />
+ -->
             </list>
           </property>
           <property name="postInvokingValves">
@@ -156,5 +74,4 @@
       </list>
     </property>
   </bean>
-
 </beans>

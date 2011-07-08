@@ -103,4 +103,4 @@ Do the same with the reatapi node into preview (same node path)
 ----
 
 http://localhost:8080/site/preview/cmisrestapi
-http://localhost:8080/site/preview/cmisrestapi/products/health-care/2010/07/avalon-organic-conditioner
+http://localhost:8080/site/preview/cmisrestapi/products/id?id=e3de6d62-beae-4536-a687-c750cb355fa5
