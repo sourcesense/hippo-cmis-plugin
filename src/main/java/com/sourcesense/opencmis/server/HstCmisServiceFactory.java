@@ -42,9 +42,9 @@ public class HstCmisServiceFactory extends AbstractServiceFactory {
   public void init(Map<String, String> parameters) {
     super.init(parameters);
     repositoryMap = new RepositoryMap();
-
-    HstCmisRepository hcr = new HstCmisRepository();
-    //HstCmisRepository hcr = new HstCmisRepository("my-repo-id", "my-root-folder-id");
+    String repoId = parameters.get("repository.id");
+    String root = parameters.get("repository.folder");
+    HstCmisRepository hcr = new HstCmisRepository(repoId, root);
     repositoryMap.addRepository(hcr);
   }
 

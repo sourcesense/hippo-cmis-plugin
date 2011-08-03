@@ -22,9 +22,7 @@ import org.apache.chemistry.opencmis.commons.definitions.PropertyDefinition;
 import org.apache.chemistry.opencmis.commons.definitions.TypeDefinition;
 import org.apache.chemistry.opencmis.commons.definitions.TypeDefinitionContainer;
 import org.apache.chemistry.opencmis.commons.definitions.TypeDefinitionList;
-import org.apache.chemistry.opencmis.commons.enums.Action;
-import org.apache.chemistry.opencmis.commons.enums.BaseTypeId;
-import org.apache.chemistry.opencmis.commons.enums.Updatability;
+import org.apache.chemistry.opencmis.commons.enums.*;
 import org.apache.chemistry.opencmis.commons.exceptions.*;
 import org.apache.chemistry.opencmis.commons.impl.Converter;
 import org.apache.chemistry.opencmis.commons.impl.dataobjects.*;
@@ -58,7 +56,7 @@ import java.util.*;
 /**
  * File system back-end for CMIS server.
  */
-public class HstCmisRepository extends AbstractJaxrsService {
+public class HstCmisRepository {
 
   private static final String HST_CMIS_VERSION_SUPPORTED = "1.0";
   private static final String HST_VENDOR_NAME = "Hippo HST Vendor Name";
@@ -136,105 +134,102 @@ public class HstCmisRepository extends AbstractJaxrsService {
     return ret;
   }
 
-  public HstCmisRepository() {
-    super(null,null);
-  }
   /**
    * Constructor.
    *
    * @param repId CMIS repository id
    * @param root  root folder
    */
-//  public HstCmisRepository(String repId, String root) {
-//    // check repository id
-//    if ((repId == null) || (repId.trim().length() == 0)) {
-//      throw new IllegalArgumentException("Invalid repository id!");
-//    }
-//
-//    fRepositoryId = repId;
-//
-//    // check root folder
-//    if ((root == null) || (root.trim().length() == 0)) {
-//      throw new IllegalArgumentException("Invalid root folder!");
-//    }
-//
-//    // set up user table
-//    fUserMap = new HashMap<String, Boolean>();
-//
-//    // compile repository info
-//    fRepositoryInfo = new RepositoryInfoImpl();
-//
-//    fRepositoryInfo.setId(fRepositoryId);
-//    fRepositoryInfo.setName(fRepositoryId);
-//    fRepositoryInfo.setDescription(fRepositoryId);
-//
-//    fRepositoryInfo.setCmisVersionSupported(HST_CMIS_VERSION_SUPPORTED);
-//
-//    fRepositoryInfo.setProductName(HST_PRODUCT_NAME);
-//    fRepositoryInfo.setProductVersion(HST_PRODUCT_VERSION);
-//    fRepositoryInfo.setVendorName(HST_VENDOR_NAME);
-//
-//    fRepositoryInfo.setRootFolder(ROOT_ID);
-//
-//    fRepositoryInfo.setThinClientUri("");
-//
-//    RepositoryCapabilitiesImpl capabilities = new RepositoryCapabilitiesImpl();
-//    capabilities.setCapabilityAcl(CapabilityAcl.DISCOVER);
-//    capabilities.setAllVersionsSearchable(false);
-//    capabilities.setCapabilityJoin(CapabilityJoin.NONE);
-//    capabilities.setSupportsMultifiling(false);
-//    capabilities.setSupportsUnfiling(false);
-//    capabilities.setSupportsVersionSpecificFiling(false);
-//    capabilities.setIsPwcSearchable(false);
-//    capabilities.setIsPwcUpdatable(false);
-//    capabilities.setCapabilityQuery(CapabilityQuery.NONE);
-//    capabilities.setCapabilityChanges(CapabilityChanges.NONE);
-//    capabilities.setCapabilityContentStreamUpdates(CapabilityContentStreamUpdates.ANYTIME);
-//    capabilities.setSupportsGetDescendants(true);
-//    capabilities.setSupportsGetFolderTree(true);
-//    capabilities.setCapabilityRendition(CapabilityRenditions.NONE);
-//
-//    fRepositoryInfo.setCapabilities(capabilities);
-//
-//    AclCapabilitiesDataImpl aclCapability = new AclCapabilitiesDataImpl();
-//    aclCapability.setSupportedPermissions(SupportedPermissions.BASIC);
-//    aclCapability.setAclPropagation(AclPropagation.OBJECTONLY);
-//
-//    // permissions
-//    List<PermissionDefinition> permissions = new ArrayList<PermissionDefinition>();
-//    permissions.add(CmisHelper.createPermission(CMIS_READ, "Read"));
-//    permissions.add(CmisHelper.createPermission(CMIS_WRITE, "Write"));
-//    permissions.add(CmisHelper.createPermission(CMIS_ALL, "All"));
-//    aclCapability.setPermissionDefinitionData(permissions);
-//
-//    // mapping
-//    List<PermissionMapping> list = new ArrayList<PermissionMapping>();
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_CREATE_DOCUMENT_FOLDER, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_CREATE_FOLDER_FOLDER, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_CONTENT_DOCUMENT, CMIS_WRITE));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_OBJECT, CMIS_ALL));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_TREE_FOLDER, CMIS_ALL));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_ACL_OBJECT, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_ALL_VERSIONS_VERSION_SERIES, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_CHILDREN_FOLDER, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_DESCENDENTS_FOLDER, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_FOLDER_PARENT_OBJECT, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_PARENTS_FOLDER, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_PROPERTIES_OBJECT, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_OBJECT, CMIS_WRITE));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_SOURCE, CMIS_READ));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_TARGET, CMIS_WRITE));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_SET_CONTENT_DOCUMENT, CMIS_WRITE));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_UPDATE_PROPERTIES_OBJECT, CMIS_WRITE));
-//    list.add(CmisHelper.createMapping(PermissionMapping.CAN_VIEW_CONTENT_OBJECT, CMIS_READ));
-//    Map<String, PermissionMapping> map = new LinkedHashMap<String, PermissionMapping>();
-//    for (PermissionMapping pm : list) {
-//      map.put(pm.getKey(), pm);
-//    }
-//    aclCapability.setPermissionMappingData(map);
-//
-//    fRepositoryInfo.setAclCapabilities(aclCapability);
-//  }
+  public HstCmisRepository(String repId, String root) {
+    // check repository id
+    if ((repId == null) || (repId.trim().length() == 0)) {
+      throw new IllegalArgumentException("Invalid repository id!");
+    }
+
+    fRepositoryId = repId;
+
+    // check root folder
+    if ((root == null) || (root.trim().length() == 0)) {
+      throw new IllegalArgumentException("Invalid root folder!");
+    }
+
+    // set up user table
+    fUserMap = new HashMap<String, Boolean>();
+
+    // compile repository info
+    fRepositoryInfo = new RepositoryInfoImpl();
+
+    fRepositoryInfo.setId(fRepositoryId);
+    fRepositoryInfo.setName(fRepositoryId);
+    fRepositoryInfo.setDescription(fRepositoryId);
+
+    fRepositoryInfo.setCmisVersionSupported(HST_CMIS_VERSION_SUPPORTED);
+
+    fRepositoryInfo.setProductName(HST_PRODUCT_NAME);
+    fRepositoryInfo.setProductVersion(HST_PRODUCT_VERSION);
+    fRepositoryInfo.setVendorName(HST_VENDOR_NAME);
+
+    fRepositoryInfo.setRootFolder(ROOT_ID);
+
+    fRepositoryInfo.setThinClientUri("");
+
+    RepositoryCapabilitiesImpl capabilities = new RepositoryCapabilitiesImpl();
+    capabilities.setCapabilityAcl(CapabilityAcl.DISCOVER);
+    capabilities.setAllVersionsSearchable(false);
+    capabilities.setCapabilityJoin(CapabilityJoin.NONE);
+    capabilities.setSupportsMultifiling(false);
+    capabilities.setSupportsUnfiling(false);
+    capabilities.setSupportsVersionSpecificFiling(false);
+    capabilities.setIsPwcSearchable(false);
+    capabilities.setIsPwcUpdatable(false);
+    capabilities.setCapabilityQuery(CapabilityQuery.NONE);
+    capabilities.setCapabilityChanges(CapabilityChanges.NONE);
+    capabilities.setCapabilityContentStreamUpdates(CapabilityContentStreamUpdates.ANYTIME);
+    capabilities.setSupportsGetDescendants(true);
+    capabilities.setSupportsGetFolderTree(true);
+    capabilities.setCapabilityRendition(CapabilityRenditions.NONE);
+
+    fRepositoryInfo.setCapabilities(capabilities);
+
+    AclCapabilitiesDataImpl aclCapability = new AclCapabilitiesDataImpl();
+    aclCapability.setSupportedPermissions(SupportedPermissions.BASIC);
+    aclCapability.setAclPropagation(AclPropagation.OBJECTONLY);
+
+    // @TODO permissions
+    //List<PermissionDefinition> permissions = new ArrayList<PermissionDefinition>();
+    //permissions.add(CmisHelper.createPermission(CMIS_READ, "Read"));
+    //permissions.add(CmisHelper.createPermission(CMIS_WRITE, "Write"));
+    //permissions.add(CmisHelper.createPermission(CMIS_ALL, "All"));
+    //aclCapability.setPermissionDefinitionData(permissions);
+
+    // mapping
+    List<PermissionMapping> list = new ArrayList<PermissionMapping>();
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_CREATE_DOCUMENT_FOLDER, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_CREATE_FOLDER_FOLDER, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_CONTENT_DOCUMENT, CMIS_WRITE));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_OBJECT, CMIS_ALL));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_DELETE_TREE_FOLDER, CMIS_ALL));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_ACL_OBJECT, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_ALL_VERSIONS_VERSION_SERIES, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_CHILDREN_FOLDER, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_DESCENDENTS_FOLDER, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_FOLDER_PARENT_OBJECT, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_PARENTS_FOLDER, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_GET_PROPERTIES_OBJECT, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_OBJECT, CMIS_WRITE));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_SOURCE, CMIS_READ));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_MOVE_TARGET, CMIS_WRITE));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_SET_CONTENT_DOCUMENT, CMIS_WRITE));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_UPDATE_PROPERTIES_OBJECT, CMIS_WRITE));
+    list.add(CmisHelper.createMapping(PermissionMapping.CAN_VIEW_CONTENT_OBJECT, CMIS_READ));
+    Map<String, PermissionMapping> map = new LinkedHashMap<String, PermissionMapping>();
+    for (PermissionMapping pm : list) {
+      map.put(pm.getKey(), pm);
+    }
+    aclCapability.setPermissionMappingData(map);
+
+    fRepositoryInfo.setAclCapabilities(aclCapability);
+  }
 
   /**
    * Returns the repository id.
@@ -1170,10 +1165,5 @@ public class HstCmisRepository extends AbstractJaxrsService {
 
   private void debug(String msg, Throwable t) {
     log.debug("<" + fRepositoryId + "> " + msg, t);
-  }
-
-  @Override
-  public void invoke(HstRequestContext hstRequestContext, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ContainerException {
-    //To change body of implemented methods use File | Settings | File Templates.
   }
 }
