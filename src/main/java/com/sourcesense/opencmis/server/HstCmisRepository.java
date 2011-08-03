@@ -30,6 +30,7 @@ import org.apache.chemistry.opencmis.commons.impl.jaxb.CmisObjectType;
 import org.apache.chemistry.opencmis.commons.impl.jaxb.CmisProperty;
 import org.apache.chemistry.opencmis.commons.impl.server.ObjectInfoImpl;
 import org.apache.chemistry.opencmis.commons.server.CallContext;
+import org.apache.chemistry.opencmis.commons.server.ObjectInfo;
 import org.apache.chemistry.opencmis.commons.server.ObjectInfoHandler;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -41,7 +42,9 @@ import org.hippoecm.hst.content.beans.standard.HippoFolderBean;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.request.HstRequestContext;
 import org.hippoecm.hst.jaxrs.AbstractJaxrsService;
+import org.hippoecm.hst.jaxrs.services.content.AbstractContentResource;
 
+import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.WebApplicationException;
@@ -51,9 +54,7 @@ import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.*;
 
-//services.support.jaxrs.content.BaseHstContentService;
-
-public class HstCmisRepository {
+public class HstCmisRepository extends AbstractContentResource {
 
   private static final String HST_CMIS_VERSION_SUPPORTED = "1.0";
   private static final String HST_VENDOR_NAME = "Hippo HST Vendor Name";
@@ -93,43 +94,8 @@ public class HstCmisRepository {
    */
   private RepositoryInfoImpl fRepositoryInfo;
 
-  private HttpServletRequest servletRequest;
-  private HttpServletResponse servletResponse;
-  private ObjectBeanPersistenceManager contentPersistenceManager;
-
   public static final String HIPPO_MODIFICATION_DATE = "hippostdpubwf:lastModificationDate";
   public static final String HIPPO_CREATION_DATE = "hippostdpubwf:creationDate";
-
-
-  public void init(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-    this.servletRequest = servletRequest;
-    this.servletResponse = servletResponse;
-//    try {
-//      this.contentPersistenceManager = getContentPersistenceManager(servletRequest);
-//    } catch (RepositoryException e) {
-//      sendCmisServiceError(e);
-//    }
-  }
-
-  public HippoBean getObjectByUuid(String objectId) {
-    HippoBean ret = null;
-    try {
-      ret = (HippoBean)this.contentPersistenceManager.getObjectByUuid(objectId);
-    } catch (ObjectBeanManagerException e) {
-      sendCmisServiceError(e);
-    }
-    return ret;
-  }
-
-  public HippoBean getObjectByPath(String path) {
-    HippoBean ret = null;
-    try {
-      ret = (HippoBean)this.contentPersistenceManager.getObject(path);
-    } catch (ObjectBeanManagerException e) {
-      sendCmisServiceError(e);
-    }
-    return ret;
-  }
 
   /**
    * Constructor.
@@ -268,11 +234,14 @@ public class HstCmisRepository {
     return fTypes.getTypesDescendants(context, typeId, depth, includePropertyDefinitions);
   }
 
-  public AllowableActions getAllowableActions(CallContext context, String objectId) {
+  public AllowableActions getAllowableActions(CallContext context, String objectId, HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
     debug("getAllowableActions");
     boolean userReadOnly = checkUser(context, false);
 
-    HippoBean bean = getObjectByUuid(objectId);
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+
+    HippoBean bean = (HippoBean) contentPersistenceManager.getObjectByUuid(objectId);
 
     if (bean == null) {
       throw new CmisObjectNotFoundException("Object not found!");
@@ -281,18 +250,43 @@ public class HstCmisRepository {
     return compileAllowableActions(bean, userReadOnly);
   }
 
+    public HippoBean getObjectByUuid(String objectId, HttpServletRequest servletRequest) throws RepositoryException {
+    HippoBean ret = null;
+      HstRequestContext requestContext = getRequestContext(servletRequest);
+      ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+    try {
+      ret = (HippoBean)contentPersistenceManager.getObjectByUuid(objectId);
+    } catch (ObjectBeanManagerException e) {
+      sendCmisServiceError(e);
+    }
+    return ret;
+  }
+
+  public HippoBean getObjectByPath(String path, HttpServletRequest servletRequest) throws RepositoryException {
+    HippoBean ret = null;
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+    try {
+      ret = (HippoBean)contentPersistenceManager.getObject(path);
+    } catch (ObjectBeanManagerException e) {
+      sendCmisServiceError(e);
+    }
+    return ret;
+  }
+
   /**
    * CMIS getContentStream.
    */
-  public ContentStream getContentStream(CallContext context, String objectId, BigInteger offset, BigInteger length) {
+  public ContentStream getContentStream(CallContext context, String objectId, BigInteger offset, BigInteger length, HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
     debug("getContentStream");
     checkUser(context, false);
 
     if ((offset != null) || (length != null)) {
       throw new CmisInvalidArgumentException("Offset and Length are not supported!");
     }
-
-    HippoBean bean = getObjectByUuid(objectId);
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+    HippoBean bean = (HippoBean) contentPersistenceManager.getObjectByUuid(objectId);
 
     if (!bean.isHippoDocumentBean()) {
       throw new CmisStreamNotSupportedException("Not a Hippo Bean!");
@@ -326,7 +320,8 @@ public class HstCmisRepository {
    */
   public ObjectInFolderList getChildren(CallContext context, String folderId, String filter,
                                         Boolean includeAllowableActions, Boolean includePathSegment, BigInteger maxItems, BigInteger skipCount,
-                                        ObjectInfoHandler objectInfos) {
+                                        ObjectInfoHandler objectInfos,
+                                        HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
     debug("getChildren");
     boolean userReadOnly = checkUser(context, false);
 
@@ -348,8 +343,11 @@ public class HstCmisRepository {
       max = Integer.MAX_VALUE;
     }
 
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+
     // get the folder
-    HippoFolderBean folder = (HippoFolderBean)getObjectByUuid(folderId);
+    HippoFolderBean folder = (HippoFolderBean) contentPersistenceManager.getObjectByUuid(folderId);
 
     // set object info of the the folder
     if (context.isObjectInfoRequired()) {
@@ -402,7 +400,8 @@ public class HstCmisRepository {
    */
   public List<ObjectInFolderContainer> getDescendants(CallContext context, String folderId, BigInteger depth,
                                                       String filter, Boolean includeAllowableActions, Boolean includePathSegment, ObjectInfoHandler objectInfos,
-                                                      boolean foldersOnly) {
+                                                      boolean foldersOnly,
+                                                      HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
     debug("getDescendants or getFolderTree");
     boolean userReadOnly = checkUser(context, false);
 
@@ -422,9 +421,11 @@ public class HstCmisRepository {
     boolean iaa = (includeAllowableActions == null ? false : includeAllowableActions.booleanValue());
     boolean ips = (includePathSegment == null ? false : includePathSegment.booleanValue());
 
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+
     // get the folder
-    // get the folder
-    HippoFolderBean folder = (HippoFolderBean)getObjectByUuid(folderId);
+    HippoFolderBean folder = (HippoFolderBean) contentPersistenceManager.getObjectByUuid(folderId);
 
     // set object info of the the folder
     if (context.isObjectInfoRequired()) {
@@ -442,8 +443,8 @@ public class HstCmisRepository {
   /**
    * CMIS getFolderParent.
    */
-  public ObjectData getFolderParent(CallContext context, String folderId, String filter, ObjectInfoHandler objectInfos) {
-    List<ObjectParentData> parents = getObjectParents(context, folderId, filter, false, false, objectInfos);
+  public ObjectData getFolderParent(CallContext context, String folderId, String filter, ObjectInfoHandler objectInfos, HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
+    List<ObjectParentData> parents = getObjectParents(context, folderId, filter, false, false, objectInfos, servletRequest);
 
     if (parents.size() == 0) {
       throw new CmisInvalidArgumentException("The root folder has no parent!");
@@ -456,7 +457,10 @@ public class HstCmisRepository {
    * CMIS getObjectParents.
    */
   public List<ObjectParentData> getObjectParents(CallContext context, String objectId, String filter,
-                                                 Boolean includeAllowableActions, Boolean includeRelativePathSegment, ObjectInfoHandler objectInfos) {
+                                                 Boolean includeAllowableActions,
+                                                 Boolean includeRelativePathSegment,
+                                                 ObjectInfoHandler objectInfos,
+                                                 HttpServletRequest servletRequest) throws ObjectBeanManagerException, RepositoryException {
     debug("getObjectParents");
     boolean userReadOnly = checkUser(context, false);
 
@@ -467,7 +471,9 @@ public class HstCmisRepository {
     boolean iaa = (includeAllowableActions == null ? false : includeAllowableActions.booleanValue());
     boolean irps = (includeRelativePathSegment == null ? false : includeRelativePathSegment.booleanValue());
 
-    HippoBean bean = getObjectByUuid(objectId);
+    HstRequestContext requestContext = getRequestContext(servletRequest);
+    ObjectBeanPersistenceManager contentPersistenceManager = getContentPersistenceManager(requestContext);
+    HippoBean bean = (HippoBean) contentPersistenceManager.getObjectByUuid(objectId);
 
     // don't climb above the root folder
     if (isRootBean(bean)) {
@@ -1149,7 +1155,8 @@ public class HstCmisRepository {
   }
 
   public void sendCmisServiceError(Exception exc) throws WebApplicationException {
-    CmisHelper.sendCmisServiceError(exc,this.servletResponse);
+    //CmisHelper.sendCmisServiceError(exc,this.servletResponse);
+    exc.printStackTrace();
   }
 
   private void warn(String msg, Throwable t) {

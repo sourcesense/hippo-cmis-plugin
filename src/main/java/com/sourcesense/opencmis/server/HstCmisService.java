@@ -27,10 +27,13 @@ import org.apache.chemistry.opencmis.commons.impl.dataobjects.TypeDefinitionList
 import org.apache.chemistry.opencmis.commons.impl.server.AbstractCmisService;
 import org.apache.chemistry.opencmis.commons.impl.server.ObjectInfoImpl;
 import org.apache.chemistry.opencmis.commons.server.CallContext;
+import org.apache.chemistry.opencmis.commons.server.ObjectInfo;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.RepositoryException;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +47,7 @@ public class HstCmisService extends AbstractCmisService {
 
   private RepositoryMap repositoryMap;
   private CallContext context;
+  private HttpServletRequest servletRequest;
 
   /**
    * Constructor.
@@ -63,7 +67,8 @@ public class HstCmisService extends AbstractCmisService {
   }
 
   public HstCmisRepository getRepository() {
-      return repositoryMap.getRepository(getCallContext().getRepositoryId());
+      //return repositoryMap.getRepository(getCallContext().getRepositoryId());
+    return repositoryMap.getRepository("hst-cmis-repository-id");
   }
 
   // --- CMIS Services implementation ---
@@ -105,6 +110,24 @@ public class HstCmisService extends AbstractCmisService {
     return new ArrayList<ObjectParentData>();
   }
 
+  @Override
+  public ObjectInfo getObjectInfo(String repositoryId, String objectId) {
+    HippoBean hippoBean = null;
+    try {
+      hippoBean = getRepository().getObjectByUuid(objectId,servletRequest);
+    } catch (RepositoryException e) {
+      throw new IllegalStateException(e);
+    }
+
+    if (hippoBean == null) {
+      throw new CmisInvalidArgumentException(String.format("Path '%1' cannot be resolved for repository ID '%2'", objectId, repositoryId));
+    }
+    ObjectInfoImpl objectInfo = new ObjectInfoImpl();
+    ObjectDataImpl objectData = new ObjectDataImpl();
+    objectData.setProperties(CmisHelper.compileHippoProperties(hippoBean, objectInfo));
+    return objectInfo;
+  }
+
   public ObjectData getObject(String repositoryId, String objectId, String filter, Boolean includeAllowableActions,
                               IncludeRelationships includeRelationships, String renditionFilter, Boolean includePolicyIds,
                               Boolean includeAcl, ExtensionsData extension) {
@@ -113,7 +136,13 @@ public class HstCmisService extends AbstractCmisService {
       throw new CmisInvalidArgumentException("Uuid cannot be null!");
     }
 
-    HippoBean hippoBean = getRepository().getObjectByUuid(objectId);
+    HippoBean hippoBean = null;
+    try {
+      hippoBean = getRepository().getObjectByUuid(objectId,servletRequest);
+    } catch (RepositoryException e) {
+      throw new IllegalStateException(e);
+    }
+
     if (hippoBean == null) {
       throw new CmisInvalidArgumentException(String.format("UUID '%1' cannot be resolved for repository ID '%2'", objectId, repositoryId));
     } else {
@@ -133,7 +162,12 @@ public class HstCmisService extends AbstractCmisService {
       throw new CmisInvalidArgumentException("Path cannot be null!");
     }
 
-    HippoBean hippoBean = getRepository().getObjectByPath(path);
+    HippoBean hippoBean = null;
+    try {
+      hippoBean = getRepository().getObjectByPath(path, servletRequest);
+    } catch (RepositoryException e) {
+      throw new IllegalStateException(e);
+    }
 
     if (hippoBean == null) {
       throw new CmisInvalidArgumentException(String.format("Path '%1' cannot be resolved for repository ID '%2'", path, repositoryId));
@@ -153,5 +187,9 @@ public class HstCmisService extends AbstractCmisService {
 
     ObjectList objectList = new ObjectListImpl();
     return objectList;
+  }
+
+  public void setServletRequest(HttpServletRequest request) {
+    this.servletRequest = request;
   }
 }

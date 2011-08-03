@@ -74,6 +74,7 @@ public class InitCmisValve extends AbstractValve {
 
     // get the CMIS Service and place it in the servlet request
     CmisService cmisService = getCmisService(servletRequest, servletResponse, callContext);
+
     servletRequest.setAttribute(CmisHelper.CMIS_SERVICE_PARAM, cmisService);
 
     // continue

@@ -43,7 +43,7 @@ public class CmisValve extends AbstractValve {
 
     //Set by the InitCmisValve
     CallContext callContext = (CallContext) servletRequest.getAttribute(CmisHelper.CALL_CONTEXT_PARAM);
-    CmisService cmisService = (CmisService) servletRequest.getAttribute(CmisHelper.CMIS_SERVICE_PARAM);
+    HstCmisService cmisService = (HstCmisService) servletRequest.getAttribute(CmisHelper.CMIS_SERVICE_PARAM);
 
     try {
       dispatch(context, cmisService, callContext, servletRequest, servletResponse);
@@ -59,7 +59,7 @@ public class CmisValve extends AbstractValve {
   }
 
 
-  private void dispatch(ValveContext valveContext, CmisService service, CallContext context, HttpServletRequest request, HttpServletResponse response) throws Exception {
+  private void dispatch(ValveContext valveContext, HstCmisService service, CallContext context, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
     try {
 
@@ -73,6 +73,8 @@ public class CmisValve extends AbstractValve {
       logger.debug(String.format("Dispatching method '%s' for repositoryId '%s' abd resource '%s'", method,repositoryId,resource));
 
       Dispatcher dispatcher = (Dispatcher) valveContext.getRequestContainerConfig().getServletContext().getAttribute("dispatcher");
+
+      service.setServletRequest(request);
 
       // dispatch
       boolean methodFound = dispatcher.dispatch(resource, method, context, service, repositoryId, request,

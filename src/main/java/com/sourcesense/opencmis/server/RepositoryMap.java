@@ -46,7 +46,7 @@ public class RepositoryMap {
   public void init(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
     for(HstCmisRepository hcr : getRepositories()) {
       if ((hcr != null) && (hcr.getRepositoryId() != null)) {
-        hcr.init(servletRequest, servletResponse);
+        //hcr.init(servletRequest, servletResponse);
       }
     }
   }
