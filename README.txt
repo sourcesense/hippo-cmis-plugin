@@ -91,21 +91,13 @@ http://localhost:8080/cms/console/
 
 Navigate through
 
-hdt:hst / hst:hosts / dev-localhost / localhost / hst:root / preview
+/hst:hst/hst:configurations/hippogogreen_rest/hst:sitemap/topproducts
 
-Copy the node restapi renaming it cmisrestapi
-
-Modify its content replacing
-
-hst:alias -> cmisrestapi
 hst:namedpipeline -> CmisRestContentPipeline
 
 
-6 - Try it (?)
+6 - Try it
 ----
 
-http://localhost:8080/site/preview/cmisrestapi/products/food/2010/07/birch-wood-compostable-cutlery
-405 (method not allowed)
 
-http://localhost:8080/site/preview/cmisrestapi/products/id?id=e3de6d62-beae-4536-a687-c750cb355fa5
-404 (probably because products/id is not defined in the hst:sitemap in the configuration)
+http://localhost:8080/site/preview/cmisrestapi/topproducts
