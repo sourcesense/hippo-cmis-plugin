@@ -12,8 +12,8 @@ In order to use it, you need to edit your pom.xml and web.xml:
 1. Build HippoGoGreen
 ----
 
-svn co http://svn.onehippo.org/repos/hippo/hippo-demos/hippo-go-green/tags/hippogogreen-3.03.03/
-cd hippogogreen-3.03.03/
+svn co http://svn.onehippo.org/repos/hippo/hippo-demos/hippo-go-green/tags/hippogogreen-3.03.01/
+cd hippogogreen-3.03.01/
 mvn clean install
 
 2. Build Hippo CMIS Plugin
