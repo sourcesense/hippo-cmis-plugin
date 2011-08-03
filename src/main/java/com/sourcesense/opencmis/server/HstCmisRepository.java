@@ -53,9 +53,6 @@ import java.util.*;
 
 //services.support.jaxrs.content.BaseHstContentService;
 
-/**
- * File system back-end for CMIS server.
- */
 public class HstCmisRepository {
 
   private static final String HST_CMIS_VERSION_SUPPORTED = "1.0";

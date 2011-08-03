@@ -91,13 +91,15 @@ http://localhost:8080/cms/console/
 
 Navigate through
 
-/hst:hst/hst:configurations/hippogogreen_rest/hst:sitemap/topproducts
+/hst:hst/hst:configurations/hippogogreen_rest/hst:sitemap
 
-hst:namedpipeline -> CmisRestContentPipeline
+Copy topproducts to cmis
 
+Change hst:namedpipeline -> CmisRestContentPipeline
+
+Copy cmis node as a cmis child, calling it _any_
 
 6 - Try it
 ----
 
-
-http://localhost:8080/site/preview/restapi/topproducts
+http://localhost:8080/site/preview/restapi/cmis/id?id=b683e689-4e10-4c8a-a445-78b4fc088a09

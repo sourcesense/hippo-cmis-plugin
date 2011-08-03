@@ -66,15 +66,9 @@ public class CmisValve extends AbstractValve {
       // analyze the path
       String[] pathFragments = CmisHelper.splitPath(request);
 
-      if (pathFragments.length < 2) {
-        // root -> service document
-        RepositoryService.getRepositories(context, service, request, response);
-        return;
-      }
-
       String method = request.getMethod();
-      String repositoryId = pathFragments[0];
       String resource = pathFragments[1];
+      String repositoryId = "hst-cmis-repository-id";
 
       logger.debug(String.format("Dispatching method '%s' for repositoryId '%s' abd resource '%s'", method,repositoryId,resource));
 
