@@ -28,6 +28,8 @@ import org.hippoecm.hst.core.container.ContainerConstants;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.ValveContext;
 import org.hippoecm.hst.core.request.HstRequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +37,8 @@ import java.math.BigInteger;
 import java.util.Map;
 
 public class InitCmisValve extends AbstractValve {
+
+  private static Logger logger = LoggerFactory.getLogger(InitCmisValve.class);
 
   private static final String METHOD_GET = "GET";
   private static final String METHOD_POST = "POST";
@@ -45,6 +49,8 @@ public class InitCmisValve extends AbstractValve {
 
   @Override
   public void invoke(ValveContext context) throws ContainerException {
+
+    logger.debug("Debugging InitCmisValve.invoke()");
 
     HttpServletRequest servletRequest = context.getServletRequest();
     HttpServletResponse servletResponse= context.getServletResponse();

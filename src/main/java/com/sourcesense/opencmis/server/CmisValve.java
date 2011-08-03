@@ -23,14 +23,20 @@ import org.apache.chemistry.opencmis.server.shared.Dispatcher;
 import org.hippoecm.hst.core.container.AbstractValve;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.ValveContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CmisValve extends AbstractValve {
 
+  private static Logger logger = LoggerFactory.getLogger(InitCmisValve.class);
+
   @Override
   public void invoke(ValveContext context) throws ContainerException {
+
+    logger.debug("Debugging CmisValve.invoke()");
 
     HttpServletRequest servletRequest = context.getServletRequest();
     HttpServletResponse servletResponse = context.getServletResponse();
