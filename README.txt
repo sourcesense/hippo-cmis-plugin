@@ -76,9 +76,11 @@ mvn -Pcargo.run
 
 Add to conf/log4j.xml
 
-<category name="com.sourcesense">
-    <level value="debug"/>
-</category>
+  <category additivity="false" name="com.sourcesense">
+    <level value="debug"/>
+    <appender-ref ref="site"/>
+    <appender-ref ref="console"/>
+  </category>
 
 5 - Create cmisrestapi node
 ----
@@ -89,7 +91,7 @@ http://localhost:8080/cms/console/
 
 Navigate through
 
-hdt:hst / hst:hosts / dev-localhost / localhost / hst:root
+hdt:hst / hst:hosts / dev-localhost / localhost / hst:root / preview
 
 Copy the node restapi renaming it cmisrestapi
 
@@ -102,5 +104,8 @@ hst:namedpipeline -> CmisRestContentPipeline
 6 - Try it (?)
 ----
 
-http://localhost:8080/site/preview/cmisrestapi
+http://localhost:8080/site/preview/cmisrestapi/products/food/2010/07/birch-wood-compostable-cutlery
+405 (method not allowed)
+
 http://localhost:8080/site/preview/cmisrestapi/products/id?id=e3de6d62-beae-4536-a687-c750cb355fa5
+404 (probably because products/id is not defined in the hst:sitemap in the configuration)
