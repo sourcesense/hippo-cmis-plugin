@@ -72,6 +72,14 @@ mvn clean install
 cd hippogogreen-3.03.01
 mvn -Pcargo.run
 
+4.1 Configure logging
+
+Add to conf/log4j.xml
+
+<category name="com.sourcesense">
+    <level value="debug"/>
+</category>
+
 5 - Create cmisrestapi node
 ----
 
@@ -90,9 +98,8 @@ Modify its content replacing
 hst:alias -> cmisrestapi
 hst:namedpipeline -> CmisRestContentPipeline
 
-Do the same with the reatapi node into preview (same node path)
 
-5 - Try it
+6 - Try it (?)
 ----
 
 http://localhost:8080/site/preview/cmisrestapi
