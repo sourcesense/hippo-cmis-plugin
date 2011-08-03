@@ -91,6 +91,17 @@ http://localhost:8080/cms/console/
 
 Navigate through
 
+hdt:hst / hst:hosts / dev-localhost / localhost / hst:root / preview
+
+Copy the node restapi renaming it cmisrestapi
+
+Modify its content replacing
+
+hst:alias -> cmisrestapi
+hst:namedpipeline -> CmisRestContentPipeline
+
+Navigate through
+
 /hst:hst/hst:configurations/hippogogreen_rest/hst:sitemap/topproducts
 
 hst:namedpipeline -> CmisRestContentPipeline
