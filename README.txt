@@ -103,3 +103,6 @@ Copy cmis node as a cmis child, calling it _any_
 ----
 
 http://localhost:8080/site/preview/restapi/cmis/id?id=b683e689-4e10-4c8a-a445-78b4fc088a09
+
+This should work.
+
